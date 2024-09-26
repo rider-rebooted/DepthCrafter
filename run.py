@@ -10,7 +10,7 @@ from depthcrafter.unet import DiffusersUNetSpatioTemporalConditionModelDepthCraf
 from depthcrafter.utils import vis_sequence_depth, save_video, read_video_frames
 
 
-vid_ext = '.avi'
+vid_ext = '.png'
 
 class DepthCrafterDemo:
     def __init__(
@@ -93,31 +93,41 @@ class DepthCrafterDemo:
         # visualize the depth map and save the results
         vis = vis_sequence_depth(res)
         # save the depth map and visualization with the target FPS
-        save_path = os.path.join(
-            save_folder, os.path.splitext(os.path.basename(video))[0]
-        )
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-        if save_npz:
-            ###np.savez_compressed(save_path + ".npz", depth=res)
-            np.savez_compressed(save_path + ".npz", depth=res)
-        ###save_video(res, save_path + "_depth.mp4", fps=target_fps)
-        save_video(res, save_path + "_depth."+vid_ext, fps=target_fps)
-        
-        ###save_video(vis, save_path + "_vis.mp4", fps=target_fps)
-        save_video(vis, save_path + "_vis."+vid_ext, fps=target_fps)
+        ###save_path = os.path.join(
+        ###    save_folder, os.path.splitext(os.path.basename(video))[0]
+        ###)
 
-        ###save_video(frames, save_path + "_input.mp4", fps=target_fps)
-        save_video(frames, save_path + "_input."+vid_ext, fps=target_fps)
+        output_types = ['depth', 'vis', 'input']
+        file_name = os.path.splitext(os.path.basename(video))[0]
+        save_path = os.path.join(save_folder, file_name)
+        os.makedirs(save_path, exist_ok=True)
+
+
+
+        if save_npz:
+            np.savez_compressed(save_path + '/'+ file_name + ".npz", depth=res)
+
+
+        for output_type in output_types:
+            type_save_path = os.path.join(save_path, output_type)
+            os.makedirs(type_save_path, exist_ok=True)
+            frame_data = res
+            if output_type=='vis':
+                frame_data = vis
+            if output_type=='input':
+                frame_data = frames
+            save_video(frame_data, type_save_path, file_name, output_type, fps=target_fps)
+
 
         return [
             ###save_path + "_input.mp4",
-            save_path + "_input."+vid_ext,
+            ###save_path + "_input."+vid_ext,
 
             ###save_path + "_vis.mp4",
-            save_path + "_vis."+vid_ext,
+            ###save_path + "_vis."+vid_ext,
 
             ###save_path + "_depth.mp4",
-            save_path + "_depth."+vid_ext,
+            ###save_path + "_depth."+vid_ext,
         ]
 
     def run(
