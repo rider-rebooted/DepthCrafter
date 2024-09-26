@@ -1,3 +1,6 @@
+- Edited to export 16bit png files
+
+
 ## ___***DepthCrafter: Generating Consistent Long Depth Sequences for Open-world Videos***___
 <div align="center">
 <img src='https://depthcrafter.github.io/img/logo.png' style="height:140px"></img>
