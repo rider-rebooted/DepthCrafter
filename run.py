@@ -10,6 +10,8 @@ from depthcrafter.unet import DiffusersUNetSpatioTemporalConditionModelDepthCraf
 from depthcrafter.utils import vis_sequence_depth, save_video, read_video_frames
 
 
+vid_ext = '.avi'
+
 class DepthCrafterDemo:
     def __init__(
         self,
@@ -96,14 +98,26 @@ class DepthCrafterDemo:
         )
         os.makedirs(os.path.dirname(save_path), exist_ok=True)
         if save_npz:
+            ###np.savez_compressed(save_path + ".npz", depth=res)
             np.savez_compressed(save_path + ".npz", depth=res)
-        save_video(res, save_path + "_depth.mp4", fps=target_fps)
-        save_video(vis, save_path + "_vis.mp4", fps=target_fps)
-        save_video(frames, save_path + "_input.mp4", fps=target_fps)
+        ###save_video(res, save_path + "_depth.mp4", fps=target_fps)
+        save_video(res, save_path + "_depth."+vid_ext, fps=target_fps)
+        
+        ###save_video(vis, save_path + "_vis.mp4", fps=target_fps)
+        save_video(vis, save_path + "_vis."+vid_ext, fps=target_fps)
+
+        ###save_video(frames, save_path + "_input.mp4", fps=target_fps)
+        save_video(frames, save_path + "_input."+vid_ext, fps=target_fps)
+
         return [
-            save_path + "_input.mp4",
-            save_path + "_vis.mp4",
-            save_path + "_depth.mp4",
+            ###save_path + "_input.mp4",
+            save_path + "_input."+vid_ext,
+
+            ###save_path + "_vis.mp4",
+            save_path + "_vis."+vid_ext,
+
+            ###save_path + "_depth.mp4",
+            save_path + "_depth."+vid_ext,
         ]
 
     def run(
