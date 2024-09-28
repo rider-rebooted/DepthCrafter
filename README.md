@@ -1,5 +1,7 @@
 - Edited to export 16bit png files
 
+- git clone https://github.com/rider-rebooted/DepthCrafter_16bit_png
+
 ##
 
 ## ___***DepthCrafter: Generating Consistent Long Depth Sequences for Open-world Videos***___
