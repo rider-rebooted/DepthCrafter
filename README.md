@@ -1,6 +1,8 @@
 - Edited to export 16bit png files
 
-- git clone https://github.com/rider-rebooted/DepthCrafter_16bit_png
+```bash
+git clone https://github.com/rider-rebooted/DepthCrafter_16bit_png
+```
 
 ##
 
