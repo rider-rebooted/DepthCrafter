@@ -3,6 +3,10 @@ import cv2
 import matplotlib.cm as cm
 import torch
 
+### must be four characters long (include a space at the end if you have to)
+### OG vid_format: str = "mp4v"
+vid_format: str = "FFV1"
+
 
 def read_video_frames(video_path, process_length, target_fps, max_res):
     # a simple function to read video frames
@@ -45,24 +49,18 @@ def read_video_frames(video_path, process_length, target_fps, max_res):
 def save_video(
     video_frames,
     output_video_path,
+    file_name,
+    export_type,
     fps: int = 15,
 ) -> str:
-    # a simple function to save video frames
-    height, width = video_frames[0].shape[:2]
+
     is_color = video_frames[0].ndim == 3
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    video_writer = cv2.VideoWriter(
-        output_video_path, fourcc, fps, (width, height), isColor=is_color
-    )
 
-    for frame in video_frames:
-        frame = (frame * 255).astype(np.uint8)
+    for idx, frame in enumerate(video_frames):
+        frame_bit_depth = (frame * 65535).astype(np.uint16)
         if is_color:
-            frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
-        video_writer.write(frame)
-
-    video_writer.release()
-    return output_video_path
+            frame_bit_depth = cv2.cvtColor(frame_bit_depth, cv2.COLOR_RGB2BGR)
+        cv2.imwrite(f"{output_video_path}/{file_name}_{export_type}_frame_{idx:04d}.png", frame_bit_depth)
 
 
 class ColorMapper:
